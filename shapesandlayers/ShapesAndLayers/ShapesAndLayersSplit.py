@@ -138,7 +138,7 @@ class ShapesAndLayersSplit(QtWidgets.QDialog):
         
         self.lblLayerName.setText( 'Layer Name: ' + self.currentLayer.name() )
         
-        self.svgHeader = re.compile('(^.*?\<svg.*?["\']\\s*\>).*$', re.DOTALL).sub(r'\1', self.currentLayer.toSvg())
+        self.svgHeader = re.compile('(^.*?<svg.*?["\']\\s*>).*$', re.DOTALL).sub(r'\1', self.currentLayer.toSvg())
 
         self.shapeListData = []
         self.maxGroupDepth = 0

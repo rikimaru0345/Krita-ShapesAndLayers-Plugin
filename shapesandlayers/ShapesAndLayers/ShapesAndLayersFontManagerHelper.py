@@ -289,7 +289,7 @@ class ShapesAndLayersFontManagerHelper():
             selectedShape = None
 
             if currentLayer.type() == 'vectorlayer':
-                svgHeader = re.compile('(^.*?\<svg.*?["\']\\s*\>).*$', re.DOTALL).sub(r'\1', currentLayer.toSvg())
+                svgHeader = re.compile('(^.*?<svg.*?["\']\\s*>).*$', re.DOTALL).sub(r'\1', currentLayer.toSvg())
                 fontFamily = self.caller.fontDict[self.fontPrivateType][self.fontPath]['families']
 
                 for shape in currentLayer.shapes():

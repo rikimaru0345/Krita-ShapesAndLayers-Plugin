@@ -59,8 +59,8 @@ class ShapesAndLayersFontSizeAdjust(QtWidgets.QDialog):
     def getFontList(self):
         svgHeader = ''
         layerUUID = ''
-        cssRegex = re.compile('([\w-]+?):\s*(.*?)\s*(?:;|$)', re.DOTALL)
-        svgRegex = re.compile('(^.*?\<svg.*?["\']\\s*\>).*$', re.DOTALL)
+        cssRegex = re.compile('([a-zA-Z0-9_-]+?):\\s*(.*?)\\s*(?:;|$)', re.DOTALL)
+        svgRegex = re.compile('(^.*?<svg.*?["\']\\s*>).*$', re.DOTALL)
         fontList = {}
         for i in range(len(self.shapeListData)):
             currentLayer = self.shapeListData[i]['layer']
@@ -108,8 +108,8 @@ class ShapesAndLayersFontSizeAdjust(QtWidgets.QDialog):
             svgHeader = ''
             layerUUID = ''
             
-            cssRegex = re.compile('([\w-]+?):\s*(.*?)\s*(?:;|$)', re.DOTALL)
-            svgRegex = re.compile('(^.*?\<svg.*?["\']\\s*\>).*$', re.DOTALL)
+            cssRegex = re.compile('([a-zA-Z0-9_-]+?):\\s*(.*?)\\s*(?:;|$)', re.DOTALL)
+            svgRegex = re.compile('(^.*?<svg.*?["\']\\s*>).*$', re.DOTALL)
             
             for i in range(len(self.shapeListData)):
                 item = self.listTextItems.item(i)

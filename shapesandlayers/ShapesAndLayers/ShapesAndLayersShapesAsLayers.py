@@ -70,9 +70,9 @@ class shapesAndLayersShapesAsLayers(DockWidget):
         #header.resizeSection(0, 20)
         #header.resizeSection(1, 20)
         
-        self.layerList.model().sourceModel().dataChanged.connect(self.layerChanged)
+        self.layerList.model().sourceModel().dataChanged.connect(self.layerChangedData)
         self.layerList.model().sourceModel().modelReset.connect(self.layerChangedReset)
-        self.layerList.model().sourceModel().rowsRemoved.connect(self.layerChanged)
+        self.layerList.model().sourceModel().rowsRemoved.connect(self.layerChangedRemoved)
         
         self.centralWidget.listShapes.itemClicked.connect(self.shapeLayerClicked)
         self.centralWidget.listShapes.itemSelectionChanged.connect(self.shapeSelectionChanged)
@@ -193,10 +193,15 @@ class shapesAndLayersShapesAsLayers(DockWidget):
             shape.update()
             item.setIcon(0, Krita.instance().icon('visible' if not visible else 'novisible' ) )
 
+    def layerChangedData(self):
+        QTimer.singleShot(1,self.layerChanged)
+        
+    def layerChangedRemoved(self):
+        QTimer.singleShot(1,self.layerChanged)
+
     def layerChangedReset(self):
-        #print ("RESET!")
         self.cleanup()
-        self.layerChanged()
+        QTimer.singleShot(1,self.layerChanged)
 
     def layerChanged(self):
         #print ("PRELAYER CHANGED!", self.centralWidget.listShapes.selectedItems() )
@@ -205,14 +210,12 @@ class shapesAndLayersShapesAsLayers(DockWidget):
             self.currentLayerUUID = None
             self.currentDocument = Krita.instance().activeDocument()
             self.centralWidget.listShapes.clear()
-        
         activeNode = self.currentDocument.activeNode()
         if activeNode is None:
             self.cleanup()
             return
         
         activeNodeUUID = activeNode.uniqueId()
-        
         if self.currentLayerUUID != activeNodeUUID:
             #print ("LAYER CHANGED!")
             self.currentLayer = activeNode
@@ -371,7 +374,7 @@ class shapesAndLayersShapesAsLayers(DockWidget):
 
         if self.editDlg.exec() == QDialog.Accepted:
             currentLayer = self.currentDocument.activeNode()
-            svgHeader = re.compile('(^.*?\<svg.*?["\']\\s*\>).*$', re.DOTALL).sub(r'\1', currentLayer.toSvg())
+            svgHeader = re.compile('(^.*?<svg.*?["\']\\s*>).*$', re.DOTALL).sub(r'\1', currentLayer.toSvg())
             svgContent = svgHeader+textBox.toPlainText()+'</svg>'
             
             selected = self.centralWidget.listShapes.selectedItems()
