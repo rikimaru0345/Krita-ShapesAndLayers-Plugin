@@ -29,6 +29,7 @@ class ShapesAndLayersVisibilityHelper(QObject):
         self.hoverToggleNodes = []
         
         self.currentLayer = None
+        self.throttle=False
 
 
     def onLoad(self, window):
@@ -182,8 +183,10 @@ class ShapesAndLayersVisibilityHelper(QObject):
 
     
     def layerDataChanged(self, idx, idx2, urole = []):
-        
+        if self.throttle == False:
+            QTimer.singleShot(1,lambda: self.layerDataChanged2(idx,idx2,urole))
     
+    def layerDataChanged2(self, idx, idx2, urole = []):
         doc = Krita.instance().activeDocument()
         
         if doc is None: return
@@ -231,11 +234,13 @@ class ShapesAndLayersVisibilityHelper(QObject):
         self.layerChanged()
         
     def layerModelReset(self):
-        self.layerChanged()
+        self.throttle=True
+        QTimer.singleShot(1,self.layerChanged)
 
 
     def layerRemove(self, idx, first, last):
-        self.layerChanged()
+        if self.throttle == False:
+            QTimer.singleShot(1,self.layerChanged)
 
     def layerChanged(self):
         doc = Krita.instance().activeDocument()
@@ -245,6 +250,7 @@ class ShapesAndLayersVisibilityHelper(QObject):
             self.currentLayer = node.uniqueId()
             if self.settings['boolBlockInvisibileLayer']:
                 self.checkBlockCanvas(node.visible())
+        self.throttle=False
 
     def bindLayerList(self,qwin):
         if self.enabledBindLayers: return
