@@ -184,7 +184,8 @@ class ShapesAndLayersVisibilityHelper(QObject):
     
     def layerDataChanged(self, idx, idx2, urole = []):
         if self.throttle == False:
-            QTimer.singleShot(1,lambda: self.layerDataChanged2(idx,idx2,urole))
+            self.layerDataChanged2(idx,idx2,urole)
+            #QTimer.singleShot(1,lambda: self.layerDataChanged2(idx,idx2,urole))
     
     def layerDataChanged2(self, idx, idx2, urole = []):
         doc = Krita.instance().activeDocument()
@@ -244,12 +245,13 @@ class ShapesAndLayersVisibilityHelper(QObject):
 
     def layerChanged(self):
         doc = Krita.instance().activeDocument()
-        node = doc.activeNode()        
+        if doc:
+            node = doc.activeNode()        
 
-        if node is not None and (self.currentLayer is None or self.currentLayer != node.uniqueId()):
-            self.currentLayer = node.uniqueId()
-            if self.settings['boolBlockInvisibileLayer']:
-                self.checkBlockCanvas(node.visible())
+            if node is not None and (self.currentLayer is None or self.currentLayer != node.uniqueId()):
+                self.currentLayer = node.uniqueId()
+                if self.settings['boolBlockInvisibileLayer']:
+                    self.checkBlockCanvas(node.visible())
         self.throttle=False
 
     def bindLayerList(self,qwin):

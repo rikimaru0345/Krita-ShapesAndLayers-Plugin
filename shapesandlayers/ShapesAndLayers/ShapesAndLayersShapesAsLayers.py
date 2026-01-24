@@ -210,23 +210,24 @@ class shapesAndLayersShapesAsLayers(DockWidget):
             self.currentLayerUUID = None
             self.currentDocument = Krita.instance().activeDocument()
             self.centralWidget.listShapes.clear()
-        activeNode = self.currentDocument.activeNode()
-        if activeNode is None:
-            self.cleanup()
-            return
+        if self.currentDocument:
+            activeNode = self.currentDocument.activeNode()
+            if activeNode is None:
+                self.cleanup()
+                return
         
-        activeNodeUUID = activeNode.uniqueId()
-        if self.currentLayerUUID != activeNodeUUID:
-            #print ("LAYER CHANGED!")
-            self.currentLayer = activeNode
-            self.currentLayerUUID = activeNodeUUID
-            
-            if self.currentLayer.type() == 'vectorlayer':
-                if self.editMode is True:
-                    self.centralWidget.setEnabled(True)
-                self.reloadShapeLayers()
-            else:
-                self.reloadShapeLayers(False)
+            activeNodeUUID = activeNode.uniqueId()
+            if self.currentLayerUUID != activeNodeUUID:
+                #print ("LAYER CHANGED!")
+                self.currentLayer = activeNode
+                self.currentLayerUUID = activeNodeUUID
+                
+                if self.currentLayer.type() == 'vectorlayer':
+                    if self.editMode is True:
+                        self.centralWidget.setEnabled(True)
+                    self.reloadShapeLayers()
+                else:
+                    self.reloadShapeLayers(False)
     
     def shapeLayerItemChanged(self,item, col):
         if col == 3:
