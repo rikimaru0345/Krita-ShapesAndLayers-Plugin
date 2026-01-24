@@ -1,6 +1,6 @@
  
 # Shapes and Layers Krita Plugin
-## v.0.10.2
+## v.0.10.3
 This plugin includes a collection of tools to manipulate vector layers and shapes. (Requires Krita 5.0+) 
 
 ## Features
