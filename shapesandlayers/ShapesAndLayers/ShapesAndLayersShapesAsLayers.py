@@ -63,6 +63,7 @@ class shapesAndLayersShapesAsLayers(DockWidget):
         
         #self.centralWidget.listShapes.setColumnWidth(0,10)
         #self.centralWidget.listShapes.setColumnWidth(1,10)
+        self.centralWidget.listShapes.setColumnCount(4)
 
         header = self.centralWidget.listShapes.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
