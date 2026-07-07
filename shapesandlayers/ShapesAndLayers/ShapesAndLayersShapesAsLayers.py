@@ -1,8 +1,10 @@
 from krita import *
 try:
     from PyQt6 import QtCore, QtGui, QtWidgets, QtSvg, uic
+    from PyQt6.QtOpenGLWidgets import QOpenGLWidget
 except ImportError:
     from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg, uic
+    from PyQt5.QtWidgets import QOpenGLWidget
 from functools import partial
 import re
 
